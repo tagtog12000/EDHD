@@ -1,3 +1,4 @@
+(*Here we past the results obtained from HugenDiag.txt*)
 eps = 0.10;
 ListDisks := Table[Disk[{i, 0}, eps], {i, 1, n/2}];
 Grph[R_] := (s = n/2;
