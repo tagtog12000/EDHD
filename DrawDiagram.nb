@@ -1,0 +1,36 @@
+eps = 0.10;
+ListDisks := Table[Disk[{i, 0}, eps], {i, 1, n/2}];
+Grph[R_] := (s = n/2;
+   ListGraph = {ListDisks};
+   For[k = 1, k <= n/2, k++, 
+    If[R[[2 k - 1]] == R[[2 k]], AppendTo[ListGraph, Thick]; s--, 
+     AppendTo[ListGraph, Thin]];
+    If[R[[2 k - 1]] == k || R[[2 k]] == k, 
+     AppendTo[
+      ListGraph, {Black, Thick, Arrowheads[{{Automatic, 0.5}}], 
+       Circle[{k, 0.5}, 0.45]}]];
+    If[R[[2 k - 1]] != k, 
+     AppendTo[
+      ListGraph, {Arrowheads[{{Automatic, 0.5}}], 
+       Arrow[BezierCurve[{{k, 0}, {(k + R[[2 k - 1]])/2, 
+           R[[2 k - 1]] - k}, {R[[2 k - 1]], 0}}]]}]];
+    If[R[[2 k]] != k, 
+     AppendTo[
+      ListGraph, {Arrowheads[{{Automatic, 0.5}}], 
+       Arrow[BezierCurve[{{k, 0}, {(k + R[[2 k]])/2, 
+           R[[2 k]] - k}, {R[[2 k]], 0}}]]}]]];
+   Return[ListGraph]);
+n = Length[Diag[[1]]];
+LN = Length[Diag];
+LisGr = {};
+LisT = {};
+Num1 = {};
+ALL = 0;
+For[i = 1, i <= LN, i++, 
+  Gr[i] = Graphics[Grph[Diag[[i]]], ImageSize -> {300, 300}];
+  Num1 = AppendTo[Num1, S == 2^(n/2)/Sym[[i]]];
+  LisGr = AppendTo[LisGr, Gr[i]];
+  If[Mod[i, 4] == 0 || i == LN, LisT = AppendTo[LisT, LisGr]; 
+   LisT = AppendTo[LisT, Num1]; LisGr = {}; Num1 = {}]];
+grd = Grid[LisT, Frame -> {True}];
+nb = CreateDocument[grd];
